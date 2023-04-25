@@ -14,7 +14,9 @@ exports.createPlace = function (req, res) {
 };
 
 exports.findAllPlaces = function (req, res) {
-    Place.find().then(places => {
+    Place.find()
+    .where({ is_active: true })
+    .then(places => {
         res.send(places);
     }
     );
