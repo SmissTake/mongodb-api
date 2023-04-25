@@ -1,5 +1,5 @@
 // Import the necessary controllers
-const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require ('../controllers/user.controller');
+const { login, register, createUser, findAllUsers , findUser, updateUser, deleteUser} = require ('../controllers/user.controller');
 
 /**
  * @swagger
@@ -32,6 +32,51 @@ const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require (
  *       - email
  *       - password
  *
+ * /login:
+ *   post:
+ *     summary: Connecte un utilisateur existant et renvoie un token JWT
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: Informations de l'utilisateur à créer
+ *         required: true
+ *         schema:
+ *           type: object
+ *           properties:
+ *             username:
+ *               type: string
+ *             password:
+ *               type: string
+ *     responses:
+ *       200:
+ *         description: Succès - renvoie un token JWT au format Bearer
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *                   description: Token JWT au format Bearer
+ *       401:
+ *         description: Nom d'utilisateur ou mot de passe incorrect
+ *
+ * /register:
+ *   post:
+ *     summary: Crée un nouvel utilisateur dans la base de données
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: Informations de l'utilisateur à créer
+ *         required: true
+ *         schema:
+ *             $ref: '#/definitions/User'
+ *     responses:
+ *       201:
+ *         description: Utilisateur créé avec succès
+ *       500:
+ *         description: Erreur interne du serveur
+ * 
  * /users:
  *   get:
  *     summary: Récupère la liste des utilisateurs
@@ -49,6 +94,8 @@ const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require (
  * /user:
  *   post:
  *     summary: Crée un nouvel utilisateur
+ *     security:
+ *      - bearerAuth: []
  *     tags:
  *       - User
  *     parameters:
@@ -89,6 +136,8 @@ const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require (
  * 
  *   patch:
  *     summary: Met à jour un utilisateur existant
+ *     security:
+ *      - bearerAuth: []
  *     tags:
  *       - User
  *     parameters:
@@ -114,6 +163,8 @@ const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require (
  *         description: Erreur lors de la mise à jour de l'utilisateur.
  *   delete:
  *     summary: Supprime un utilisateur existant
+ *     security:
+ *      - bearerAuth: []
  *     tags:
  *       - User
  *     parameters:
@@ -134,6 +185,9 @@ const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require (
 
 // Export the routes to be used by the app
 module.exports = (app) => {
+    app.post("/login", login);
+    app.post("/register", register);
+
     app.post('/user', createUser);
     app.get('/users', findAllUsers);
     app.get('/user/:id', findUser);

@@ -20,6 +20,20 @@ const options = {
     host: 'localhost:3000',
     basePath: '/',
   },
+  components: {
+    securitySchemes: {
+      BearerAuth: {
+        type: "http",
+        scheme: "bearer",
+        bearerFormat: "JWT",
+      },
+    },
+  },
+  security: [
+    {
+      BearerAuth: [],
+    },
+  ],
   apis: ['./routes/*.js'],
 };
 

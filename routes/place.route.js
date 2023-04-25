@@ -1,4 +1,5 @@
 const { createPlace, findAllPlaces, findPlace, updatePlace, deletePlace } = require('../controllers/place.controller');
+const authenticateToken = require("../middlewares/authenticateToken");
 
 /**
  * @swagger
@@ -53,6 +54,8 @@ const { createPlace, findAllPlaces, findPlace, updatePlace, deletePlace } = requ
  * /place:
  *   post:
  *     summary: Crée un nouveau lieu d'urbex
+ *     security:
+ *      - bearerAuth: []
  *     tags:
  *       - Place
  *     parameters:
@@ -92,6 +95,8 @@ const { createPlace, findAllPlaces, findPlace, updatePlace, deletePlace } = requ
  *
  *   patch:
  *     summary: Update a place by ID
+ *     security:
+ *      - bearerAuth: []
  *     tags: [Place]
  *     parameters:
  *       - name: id
@@ -118,6 +123,8 @@ const { createPlace, findAllPlaces, findPlace, updatePlace, deletePlace } = requ
  *
  *   delete:
  *     summary: Delete a place by ID
+ *     security:
+ *      - bearerAuth: []
  *     tags: [Place]
  *     parameters:
  *       - name: id
@@ -134,9 +141,9 @@ const { createPlace, findAllPlaces, findPlace, updatePlace, deletePlace } = requ
  */
 
 module.exports = (app) => {
-    app.post('/place', createPlace);
+    app.post('/place', authenticateToken, createPlace);
     app.get('/', findAllPlaces);
     app.get('/place/:id', findPlace);
-    app.patch('/place/:id', updatePlace);
-    app.delete('/place/:id', deletePlace);
+    app.patch('/place/:id', authenticateToken, updatePlace);
+    app.delete('/place/:id', authenticateToken, deletePlace);
 }
