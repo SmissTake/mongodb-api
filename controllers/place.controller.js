@@ -20,6 +20,16 @@ exports.findAllPlaces = function (req, res) {
     );
 }
 
+exports.findPlace = function (req, res) {
+    Place.findById(req.params.id).then(place => {
+        res.send(place);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving the Place."
+        });
+    });
+}
+
 exports.updatePlace = function (req, res) {
     Place.updateOne({_id: req.params.id}, {...req.body})
     .then(data => {
