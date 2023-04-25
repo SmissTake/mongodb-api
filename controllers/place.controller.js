@@ -2,7 +2,7 @@ const db = require('../models');
 
 const Place = db.place;
 
-exports.create = function (req, res) {
+exports.createPlace = function (req, res) {
     const place = new Place({...req.body});
     place.save().then(data => {
         res.send(data);
@@ -13,9 +13,31 @@ exports.create = function (req, res) {
     });
 };
 
-exports.findAll = function (req, res) {
+exports.findAllPlaces = function (req, res) {
     Place.find().then(places => {
         res.send(places);
     }
     );
+}
+
+exports.updatePlace = function (req, res) {
+    Place.updateOne({_id: req.params.id}, {...req.body})
+    .then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while updating the Place."
+        });
+    });
+}
+
+exports.deletePlace = function (req, res) {
+    Place.deleteOne({_id: req.params.id})
+    .then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while deleting the Place."
+        });
+    });
 }
