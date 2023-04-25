@@ -6,23 +6,15 @@ const User = mongoose.model(
         username: String,
         email: String,
         password: String,
-        bio: String,
+        bio: {
+            type: String,
+            required: false,
+        },
         role: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Role'
-            }
-        ],
-        places: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Place'
-            }
-        ],
-        comments: [
-            {
-                type: mongoose.Schema.Types.ObjectId,
-                ref: 'Comment'
+                ref: 'Role',
+                default: 'user'
             }
         ],
     })
