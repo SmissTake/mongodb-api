@@ -5,9 +5,18 @@ const PlaceSchema = new mongoose.Schema({
     description: String,
     history: String,
     town: String,
-    is_active: Boolean,
-    created_at: Date,
-    likes: Number,
+    is_active: {
+        type: Boolean,
+        default: true
+    },
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    likes : {
+        type: Number,
+        default: 0
+    },
     category: String,
     // comments: [{
     //     type: mongoose.Schema.Types.ObjectId,

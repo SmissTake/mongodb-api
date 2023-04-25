@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
-db.mongoose.connect('mongodb://localhost:27017/Test');
+db.mongoose.connect('mongodb://localhost:27017/urbex');
 
 require('./routes/place.route')(app);
 

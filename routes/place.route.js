@@ -1,6 +1,6 @@
-const { add, findAll } = require('../controllers/place.controller');
+const { create, findAll } = require('../controllers/place.controller');
 
 module.exports = (app) => {
-    app.get('/addplace', add);
+    app.post('/place', create);
     app.get('/', findAll);
 }
