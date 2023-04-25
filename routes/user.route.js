@@ -27,12 +27,6 @@ const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require (
  *         type: string
  *         description: Biographie de l'utilisateur
  *         example: I'm a software developer
- *       role:
- *         type: array
- *         description: Rôles de l'utilisateur
- *         items:
- *           type: string
- *           example: user
  *     required:
  *       - username
  *       - email
@@ -51,15 +45,19 @@ const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require (
  *               type: array
  *               items:
  *                 $ref: '#/definitions/User'
+ *
+ * /user:
  *   post:
  *     summary: Crée un nouvel utilisateur
- *     tags: [User]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             $ref: '#/definitions/User'
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: body
+ *         name: body
+ *         description: Informations de l'utilisateur à créer
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/User'
  *     responses:
  *       '200':
  *         description: Utilisateur créé avec succès
@@ -67,7 +65,7 @@ const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require (
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/User'
- *
+ * 
  * /user/{id}:
  *   get:
  *     summary: Récupérer un utilisateur par son identifiant.
@@ -88,6 +86,49 @@ const { createUser, findAllUsers , findUser, updateUser, deleteUser} = require (
  *         description: Utilisateur non trouvé - L'identifiant fourni ne correspond à aucun utilisateur existant.
  *       500:
  *         description: Erreur lors de la récupération de l'utilisateur.
+ * 
+ *   patch:
+ *     summary: Met à jour un utilisateur existant
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identifiant de l'utilisateur à mettre à jour.
+ *         type: string
+ *       - in: body
+ *         name: body
+ *         description: Informations de l'utilisateur à mettre à jour
+ *         required: true
+ *         schema:
+ *           $ref: '#/definitions/User'
+ *     responses:
+ *       200:
+ *         description: Utilisateur mis à jour avec succès.
+ *         schema:
+ *           $ref: '#/definitions/User'
+ *       404:
+ *         description: Utilisateur non trouvé - L'identifiant fourni ne correspond à aucun utilisateur existant.
+ *       500:
+ *         description: Erreur lors de la mise à jour de l'utilisateur.
+ *   delete:
+ *     summary: Supprime un utilisateur existant
+ *     tags:
+ *       - User
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: Identifiant de l'utilisateur à supprimer.
+ *         type: string
+ *     responses:
+ *       200:
+ *         description: Utilisateur supprimé avec succès.
+ *         schema:
+ *           $ref: '#/definitions/User'
+ *       404:
+ *         description: Utilisateur non trouvé
  *
  */
 
