@@ -39,11 +39,12 @@ exports.login = async (req, res) => {
     const user = new User({
       username,
       password: hashedPassword,
+      email: req.body.email,
     });
   
-    await user.save();
+    const data = await user.save();
   
-    res.status(201).send("Utilisateur créé avec succès");
+    res.status(201).send(data);
   };
 
 exports.createUser = function (req, res) {
