@@ -23,13 +23,9 @@ const PlaceSchema = new mongoose.Schema({
     //     ref: 'Comment',
     //     required: false
     // }],
-    // images: [{
-    //     url: String,
-    // }],
-    // user: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'User',
-    // }],
+    images: [{
+        url: String,
+    }],  
 });
 const Place = mongoose.model('Place', PlaceSchema);
 
