@@ -1,5 +1,7 @@
 const mongoose = require('mongoose');
 
+const Comment = require('./comment.model');
+
 const PlaceSchema = new mongoose.Schema({
     title: String,
     description: String,
@@ -18,14 +20,15 @@ const PlaceSchema = new mongoose.Schema({
         default: 0
     },
     category: String,
-    // comments: [{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Comment',
-    //     required: false
-    // }],
+    accessibility: {
+        type: String,
+        enum: ['easy', 'medium', 'hard'],
+        default: 'easy'
+    },
+    comments: [Comment],
     images: [{
         url: String,
-    }],  
+    }],
 });
 const Place = mongoose.model('Place', PlaceSchema);
 
