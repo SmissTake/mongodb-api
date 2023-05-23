@@ -11,4 +11,6 @@ db.ROLES = ["user", "admin", "moderator"];
 
 db.place = require("./place.model");
 
+db.comment = require("./comment.model");
+
 module.exports = db;
