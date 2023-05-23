@@ -1,5 +1,5 @@
 // Import the necessary controllers
-const { login, register, createUser, findAllUsers , findUser, updateUser, deleteUser} = require ('../controllers/user.controller');
+const { login, register, findAllUsers , findUser, updateUser, deleteUser} = require ('../controllers/user.controller');
 
 /**
  * @swagger

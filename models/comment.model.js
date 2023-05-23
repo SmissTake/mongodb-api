@@ -14,12 +14,6 @@ const Comment = new mongoose.Schema({
       url: String,
     },
   ],
-  place: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Place",
-    },
-  ],
 });
 
 module.exports = Comment;

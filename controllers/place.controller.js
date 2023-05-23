@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 const Place = db.place;
 
+
 exports.createPlace = function (req, res) {
     const token = req.headers.authorization.split(' ')[1];
     const decodedToken = jwt.decode(token);
@@ -103,3 +104,35 @@ exports.deletePlace = function (req, res) {
         });
     });
 };
+
+exports.createComment = function (req, res) {
+    const placeId = req.params.id;
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.decode(token);
+    const userId = decodedToken.userId;
+
+    Place.findById(placeId).then(place => {
+        if (!place) {
+            return res.status(404).send({
+                message: "Place not found with id " + placeId
+            });
+        }
+
+        place.comments.push({
+            ...req.body,
+            user: userId
+        });
+
+        place.save().then(data => {
+            res.send(data);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while creating the Comment."
+            });
+        });
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while finding the Place."
+        });
+    });
+}

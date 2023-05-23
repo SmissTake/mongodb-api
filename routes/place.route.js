@@ -1,4 +1,4 @@
-const { createPlace, findAllPlaces, findPlace, updatePlace, deletePlace } = require('../controllers/place.controller');
+const { createPlace, findAllPlaces, findPlace, updatePlace, deletePlace, createComment } = require('../controllers/place.controller');
 const authenticateToken = require("../middlewares/authenticateToken");
 
 /**
@@ -146,4 +146,5 @@ module.exports = (app) => {
     app.get('/place/:id', findPlace);
     app.patch('/place/:id', authenticateToken, updatePlace);
     app.delete('/place/:id', authenticateToken, deletePlace);
+    app.post('/comment/:id', authenticateToken, createComment);
 }
