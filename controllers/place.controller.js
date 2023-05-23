@@ -41,12 +41,33 @@ exports.findPlace = function (req, res) {
 }
 
 exports.updatePlace = function (req, res) {
-    Place.updateOne({_id: req.params.id}, {...req.body})
-    .then(data => {
-        res.send(data);
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.decode(token);
+    const userId = decodedToken.userId;
+    const placeId = req.params.id;
+
+    Place.findById(placeId).then(place => {
+        if (!place) {
+            return res.status(404).send({
+                message: "Place not found with id " + placeId
+            });
+        }
+        if (place.user.toString() !== userId) { // check if user ID matches
+            return res.status(403).send({
+                message: "You are not authorized to update this place"
+            });
+        }
+
+        Place.findByIdAndUpdate(placeId, req.body, { new: true }).then(updatedPlace => {
+            res.send(updatedPlace);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while updating the Place."
+            });
+        });
     }).catch(err => {
         res.status(500).send({
-            message: err.message || "Some error occurred while updating the Place."
+            message: err.message || "Some error occurred while finding the Place."
         });
     });
 }
