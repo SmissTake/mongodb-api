@@ -1,9 +1,17 @@
 const db = require('../models');
+const jwt = require('jsonwebtoken');
 
 const Place = db.place;
 
 exports.createPlace = function (req, res) {
-    const place = new Place({...req.body});
+    const token = req.headers.authorization.split(' ')[1];
+    const decodedToken = jwt.decode(token);
+    const userId = decodedToken.userId;
+
+    const place = new Place({
+        ...req.body,
+        user: userId
+    });
     place.save().then(data => {
         res.send(data);
     }).catch(err => {
