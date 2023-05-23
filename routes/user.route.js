@@ -188,7 +188,6 @@ module.exports = (app) => {
     app.post("/login", login);
     app.post("/register", register);
 
-    app.post('/user', createUser);
     app.get('/users', findAllUsers);
     app.get('/user/:id', findUser);
     app.patch('/user/:id', updateUser);
