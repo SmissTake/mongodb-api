@@ -2,7 +2,7 @@ const db = require('../models');
 const jwt = require('jsonwebtoken');
 
 const Place = db.place;
-
+const uploadMiddleware = require('../middlewares/upload.middleware');
 
 exports.createPlace = function (req, res) {
     const token = req.headers.authorization.split(' ')[1];
@@ -13,11 +13,24 @@ exports.createPlace = function (req, res) {
         ...req.body,
         user: userId
     });
-    place.save().then(data => {
-        res.send(data);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the Place."
+
+    uploadMiddleware(req, res, function (err) {
+        if (err) {
+            return res.status(500).send({
+                message: err.message || "Some error occurred while uploading the image."
+            });
+        }
+
+        if (req.files && req.files.length > 0) {
+            place.images = req.files.map(file => ({ url: file.path }));
+        }
+
+        place.save().then(data => {
+            res.send(data);
+        }).catch(err => {
+            res.status(500).send({
+                message: err.message || "Some error occurred while creating the Place."
+            });
         });
     });
 };
