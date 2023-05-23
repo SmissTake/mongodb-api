@@ -47,17 +47,6 @@ exports.login = async (req, res) => {
     res.status(201).send(data);
   };
 
-exports.createUser = function (req, res) {
-    const user = new User({...req.body});
-    user.save().then(data => {
-        res.send(data);
-    }).catch(err => {
-        res.status(500).send({
-            message: err.message || "Some error occurred while creating the User."
-        })
-    })
-}
-
 exports.findAllUsers = function (req, res) {
     User.find().then(data => {
         res.send(data);
