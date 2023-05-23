@@ -29,6 +29,10 @@ const PlaceSchema = new mongoose.Schema({
     images: [{
         url: String,
     }],
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    }
 });
 const Place = mongoose.model('Place', PlaceSchema);
 
