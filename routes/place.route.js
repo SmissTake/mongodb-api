@@ -1,4 +1,13 @@
-const { createPlace, findAllPlaces, findPlace, updatePlace, deletePlace, createComment, updateComment } = require('../controllers/place.controller');
+const {
+  createPlace,
+  findAllPlaces,
+  findPlace,
+  updatePlace,
+  deletePlace,
+  createComment,
+  updateComment,
+  deleteComment,
+} = require("../controllers/place.controller");
 const authenticateToken = require("../middlewares/authenticateToken");
 
 /**
@@ -141,11 +150,12 @@ const authenticateToken = require("../middlewares/authenticateToken");
  */
 
 module.exports = (app) => {
-    app.post('/place', authenticateToken, createPlace);
-    app.get('/', findAllPlaces);
-    app.get('/place/:id', findPlace);
-    app.patch('/place/:id', authenticateToken, updatePlace);
-    app.delete('/place/:id', authenticateToken, deletePlace);
-    app.post('/comment/:id', authenticateToken, createComment);
-    app.patch('/comment/:id', authenticateToken, updateComment);
-}
+  app.post("/place", authenticateToken, createPlace);
+  app.get("/", findAllPlaces);
+  app.get("/place/:id", findPlace);
+  app.patch("/place/:id", authenticateToken, updatePlace);
+  app.delete("/place/:id", authenticateToken, deletePlace);
+  app.post("/comment/:id", authenticateToken, createComment);
+  app.patch("/comment/:id", authenticateToken, updateComment);
+  app.delete("/comment/:id", authenticateToken, deleteComment);
+};
