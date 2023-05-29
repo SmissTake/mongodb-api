@@ -72,11 +72,44 @@ exports.updatePlace = function (req, res) {
             });
         }
 
-        Place.findByIdAndUpdate(placeId, req.body, { new: true }).then(updatedPlace => {
-            res.send(updatedPlace);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while updating the Place."
+        uploadMiddleware(req, res, function (err) {
+            if (err) {
+                return res.status(500).send({
+                    message: err.message || "Some error occurred while uploading the image."
+                });
+            }
+
+            Place.findByIdAndUpdate(placeId, req.body, { new: true }).then(updatedPlace => {
+                if (req.body.removeImages && Array.isArray(req.body.removeImages)) {
+                    req.body.removeImages.forEach(image => {
+                        const imageIndex = place.images.findIndex(img => img._id.toString() === image);
+                        if (imageIndex !== -1) {
+                            fs.unlink(place.images[imageIndex].url, err => {
+                                if (err) {
+                                    console.error(err);
+                                }
+                            });
+                            place.images.splice(imageIndex, 1);
+                        }
+                    });
+                }
+
+                if (req.files && req.files.length > 0) {
+                    updatedPlace.images = req.files.map(file => ({ url: file.path }));
+                    updatedPlace.save().then(data => {
+                        res.send(data);
+                    }).catch(err => {
+                        res.status(500).send({
+                            message: err.message || "Some error occurred while updating the Place."
+                        });
+                    });
+                } else {
+                    res.send(updatedPlace);
+                }
+            }).catch(err => {
+                res.status(500).send({
+                    message: err.message || "Some error occurred while updating the Place."
+                });
             });
         });
     }).catch(err => {
@@ -84,7 +117,7 @@ exports.updatePlace = function (req, res) {
             message: err.message || "Some error occurred while finding the Place."
         });
     });
-}
+};
 
 exports.deletePlace = function (req, res) {
     const placeId = req.params.id;
