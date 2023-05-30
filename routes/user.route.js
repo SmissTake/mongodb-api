@@ -1,6 +1,9 @@
 // Import the necessary controllers
 const { login, register, findAllUsers , findUser, updateUser, deleteUser} = require ('../controllers/user.controller');
 
+// Import the necessary middlewares
+const { schemaValidator } = require('../middlewares/validation.middleware');
+const { registerSchema } = require('../schemas/register.schema')
 /**
  * @swagger
  * tags:
@@ -186,7 +189,7 @@ const { login, register, findAllUsers , findUser, updateUser, deleteUser} = requ
 // Export the routes to be used by the app
 module.exports = (app) => {
     app.post("/login", login);
-    app.post("/register", register);
+    app.post("/register", schemaValidator(registerSchema), register);
 
     app.get('/users', findAllUsers);
     app.get('/user/:id', findUser);
