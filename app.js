@@ -40,7 +40,7 @@ const options = {
 const specs = swaggerDocument(options);
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-
+app.use('/uploads', express.static('uploads'));
 db.mongoose.connect('mongodb://localhost:27017/urbex');
 
 require('./routes/place.route')(app);
