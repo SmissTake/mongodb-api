@@ -11,3 +11,7 @@ function schemaValidator(schema) {
     }
   };
 }
+
+module.exports = {
+  schemaValidator
+};
