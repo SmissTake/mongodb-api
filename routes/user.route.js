@@ -3,7 +3,7 @@ const { login, register, findAllUsers , findUser, updateUser, deleteUser} = requ
 
 // Import the necessary middlewares
 const { schemaValidator } = require('../middlewares/validation.middleware');
-const { registerSchema } = require('../schemas/register.schema')
+const { registerSchema, loginSchema } = require('../schemas/user.schema')
 /**
  * @swagger
  * tags:
@@ -188,7 +188,7 @@ const { registerSchema } = require('../schemas/register.schema')
 
 // Export the routes to be used by the app
 module.exports = (app) => {
-    app.post("/login", login);
+    app.post("/login", schemaValidator(loginSchema), login);
     app.post("/register", schemaValidator(registerSchema), register);
 
     app.get('/users', findAllUsers);
