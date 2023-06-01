@@ -9,6 +9,7 @@ const {
   deleteComment,
 } = require("../controllers/place.controller");
 const authenticateToken = require("../middlewares/authenticateToken");
+const { placeSchema } = require("../schemas/place.schema");
 
 /**
  * @swagger
@@ -150,7 +151,7 @@ const authenticateToken = require("../middlewares/authenticateToken");
  */
 
 module.exports = (app) => {
-  app.post("/place", authenticateToken, createPlace);
+  app.post("/place", authenticateToken, schemaValidator(placeSchema), createPlace);
   app.get("/", findAllPlaces);
   app.get("/place/:id", findPlace);
   app.patch("/place/:id", authenticateToken, updatePlace);
