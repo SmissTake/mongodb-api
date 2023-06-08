@@ -9,6 +9,7 @@ const {
   deleteComment,
 } = require("../controllers/place.controller");
 const authenticateToken = require("../middlewares/authenticateToken");
+const { schemaValidator } = require('../middlewares/validation.middleware');
 const { placeSchema } = require("../schemas/place.schema");
 
 /**
