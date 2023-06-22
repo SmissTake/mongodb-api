@@ -32,7 +32,6 @@ function uploadMiddleware(req, res, next) {
 
     if (req.files && req.files.length > 0) {
       req.body.images = req.files.map(file => ({ url: file.path }));
-      req.body.imageNames = req.files.map(file => file.filename); // Add filenames to the request body
     }
 
     next();

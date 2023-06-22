@@ -12,6 +12,7 @@ const authenticateToken = require("../middlewares/authenticateToken");
 const { schemaValidator } = require('../middlewares/validation.middleware');
 const { placeSchema } = require("../schemas/place.schema");
 const upload = require('../middlewares/upload.middleware');
+const { validate } = require("../models/user.model");
 
 
 /**
@@ -154,8 +155,7 @@ const upload = require('../middlewares/upload.middleware');
  */
 
 module.exports = (app) => {
-  app.post("/place", authenticateToken, upload, createPlace);
-  // app.post("/place", authenticateToken, createPlace);
+  app.post("/place", authenticateToken, upload, schemaValidator(placeSchema), createPlace);
   app.get("/", findAllPlaces);
   app.get("/place/:id", findPlace);
   app.patch("/place/:id", authenticateToken, updatePlace);
