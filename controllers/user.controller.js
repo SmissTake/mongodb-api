@@ -28,18 +28,34 @@ exports.login = async (req, res) => {
     });
   
     // Envoyer le token JWT au format Bearer
-    res.status(200).json({ token: token });
+    res.status(200).json({ 
+        token: token,
+        userId: user._id,
+    });
   };
   
   exports.register = async (req, res) => {
-    const { username, password } = req.body;
+    const { username, email, password, bio } = req.body;
+
+    // Check if username already exists
+    const existingUser = await User.findOne({ username });
+    if (existingUser) {
+        return res.status(409).send({ message: 'Username already exists' });
+    }
+
+    // Check if email already exists
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(409).send({ message: 'Email already exists' });
+    }
   
     const hashedPassword = await bcrypt.hash(password, 10);
   
     const user = new User({
       username,
       password: hashedPassword,
-      email: req.body.email,
+      email,
+      bio,
     });
   
     const data = await user.save();
@@ -54,7 +70,8 @@ exports.findAllUsers = function (req, res) {
 }
 
 exports.findUser = function (req, res) {
-    User.findById(req.params.id).then(data => {
+    User.findById(req.params.id)
+    .then(data => {
         res.send(data);
     }).catch(err => {
         res.status(500).send({
