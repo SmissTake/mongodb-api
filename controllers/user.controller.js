@@ -64,13 +64,16 @@ exports.login = async (req, res) => {
   };
 
 exports.findAllUsers = function (req, res) {
-    User.find().then(data => {
+    User.find()
+    .select("-password -role")
+    .then(data => {
         res.send(data);
     });
 }
 
 exports.findUser = function (req, res) {
     User.findById(req.params.id)
+    .select("-password -role")
     .then(data => {
         res.send(data);
     }).catch(err => {
