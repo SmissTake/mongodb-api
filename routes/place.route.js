@@ -152,7 +152,8 @@ const { placeSchema } = require("../schemas/place.schema");
  */
 
 module.exports = (app) => {
-  app.post("/place", authenticateToken, schemaValidator(placeSchema), createPlace);
+  // app.post("/place", authenticateToken, schemaValidator(placeSchema), createPlace);
+  app.post("/place", authenticateToken, createPlace);
   app.get("/", findAllPlaces);
   app.get("/place/:id", findPlace);
   app.patch("/place/:id", authenticateToken, updatePlace);

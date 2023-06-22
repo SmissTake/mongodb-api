@@ -188,8 +188,10 @@ const { registerSchema, loginSchema } = require('../schemas/user.schema')
 
 // Export the routes to be used by the app
 module.exports = (app) => {
-    app.post("/login", schemaValidator(loginSchema), login);
-    app.post("/register", schemaValidator(registerSchema), register);
+    // app.post("/login", schemaValidator(loginSchema), login);
+    // app.post("/register", schemaValidator(registerSchema), register);
+    app.post("/login", login);
+    app.post("/register", register);
 
     app.get('/users', findAllUsers);
     app.get('/user/:id', findUser);
