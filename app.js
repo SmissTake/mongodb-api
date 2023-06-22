@@ -21,27 +21,22 @@ const options = {
       version: '1.0.0',
       description: 'Urbex API with express',
     },
-  },
-  servers: [
-    {
-      url: 'http://localhost:3000',
-      description: 'Serveur de production'
-    },
-  ],
-  components: {
-    securitySchemes: {
-      BearerAuth: {
-        type: "http",
-        scheme: "bearer",
-        bearerFormat: "JWT",
+    servers: [
+      {
+        url: 'http://localhost:3000',
+        description: 'Serveur de production'
+      },
+    ],
+    components: {
+      securitySchemes: {
+        BearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
       },
     },
   },
-  security: [
-    {
-      BearerAuth: [],
-    },
-  ],
   apis: ['./routes/*.js'],
 };
 
