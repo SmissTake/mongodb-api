@@ -14,23 +14,12 @@ exports.createPlace = function (req, res) {
         user: userId
     });
 
-    uploadMiddleware(req, res, function (err) {
-        if (err) {
-            return res.status(500).send({
-                message: err.message || "Some error occurred while uploading the image."
-            });
-        }
-
-        if (req.files && req.files.length > 0) {
-            place.images = req.files.map(file => ({ url: file.path }));
-        }
-
-        place.save().then(data => {
-            res.send(data);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while creating the Place."
-            });
+    console.log(req.body);
+    place.save().then(data => {
+        res.send(data);
+    }).catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while creating the Place."
         });
     });
 };
