@@ -37,15 +37,23 @@ exports.createPlace = function (req, res) {
 
 exports.findAllPlaces = function (req, res) {
     Place.find()
+    .populate('user', 'username')
     .where({ is_active: true })
     .then(places => {
         res.send(places);
-    }
-    );
+    })
+    .catch(err => {
+        res.status(500).send({
+            message: err.message || "Some error occurred while retrieving the Places."
+        });
+    });
 }
 
 exports.findPlace = function (req, res) {
-    Place.findById(req.params.id).then(place => {
+    Place.findById(req.params.id)
+    .populate('user', 'username')
+    .where({ is_active: true })
+    .then(place => {
         res.send(place);
     }).catch(err => {
         res.status(500).send({
