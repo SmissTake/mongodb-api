@@ -10,9 +10,9 @@ const {
 } = require("../controllers/place.controller");
 const authenticateToken = require("../middlewares/authenticateToken");
 const { schemaValidator } = require('../middlewares/validation.middleware');
-const { placeSchema } = require("../schemas/place.schema");
+const { placeCreateSchema, placeUpdateSchema } = require("../schemas/place.schema");
+const { commentCreateSchema, commentUpdateSchema } = require("../schemas/comment.schema");
 const upload = require('../middlewares/upload.middleware');
-const { validate } = require("../models/user.model");
 
 
 /**
@@ -155,12 +155,12 @@ const { validate } = require("../models/user.model");
  */
 
 module.exports = (app) => {
-  app.post("/place", authenticateToken, upload, schemaValidator(placeSchema), createPlace);
+  app.post("/place", authenticateToken, upload, schemaValidator(placeCreateSchema), createPlace);
   app.get("/", findAllPlaces);
   app.get("/place/:id", findPlace);
-  app.patch("/place/:id", authenticateToken, updatePlace);
+  app.patch("/place/:id", authenticateToken, upload, schemaValidator(placeUpdateSchema), updatePlace);
   app.delete("/place/:id", authenticateToken, deletePlace);
-  app.post("/comment/:id", authenticateToken, createComment);
-  app.patch("/comment/:id", authenticateToken, updateComment);
+  app.post("/comment/:id", authenticateToken, upload, schemaValidator(commentCreateSchema), createComment);
+  app.patch("/comment/:id", authenticateToken, upload, schemaValidator(commentUpdateSchema), updateComment);
   app.delete("/comment/:id", authenticateToken, deleteComment);
 };

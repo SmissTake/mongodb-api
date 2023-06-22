@@ -9,7 +9,7 @@ const Comment = new mongoose.Schema({
       ref: "User",
     },
   ],
-  image: [
+  images: [
     {
       url: String,
     },
