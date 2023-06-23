@@ -138,12 +138,13 @@ const { registerSchema, loginSchema } = require('../schemas/user.schema')
  *         required: true
  *         description: Identifiant de l'utilisateur à mettre à jour.
  *         type: string
- *       - in: body
- *         name: body
+ *     requestBody:
  *         description: Informations de l'utilisateur à mettre à jour
  *         required: true
- *         schema:
- *           $ref: '#/definitions/User'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/User'
  *     responses:
  *       200:
  *         description: Utilisateur mis à jour avec succès.
