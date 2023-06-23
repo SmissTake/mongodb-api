@@ -25,7 +25,7 @@ const { registerSchema, loginSchema } = require('../schemas/user.schema')
  *       password:
  *         type: string
  *         description: Mot de passe de l'utilisateur
- *         example: mysecretpassword
+ *         example: Password123
  *       bio:
  *         type: string
  *         description: Biographie de l'utilisateur
@@ -38,18 +38,22 @@ const { registerSchema, loginSchema } = require('../schemas/user.schema')
  * /login:
  *   post:
  *     summary: Connecte un utilisateur existant et renvoie un token JWT
- *     parameters:
- *       - in: body
- *         name: body
- *         description: Informations de l'utilisateur à créer
- *         required: true
- *         schema:
- *           type: object
- *           properties:
- *             username:
- *               type: string
- *             password:
- *               type: string
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: Nom d'utilisateur de l'utilisateur
+ *                 example: JohnDoe
+ *               password:
+ *                 type: string
+ *                 description: Mot de passe de l'utilisateur
+ *                 example: Password123
  *     responses:
  *       200:
  *         description: Succès - renvoie un token JWT au format Bearer
@@ -63,20 +67,27 @@ const { registerSchema, loginSchema } = require('../schemas/user.schema')
  *                   description: Token JWT au format Bearer
  *       401:
  *         description: Nom d'utilisateur ou mot de passe incorrect
+ *       422:
+ *         description: Erreur de validation
+ *       500:
+ *         description: Erreur interne du serveur
  *
  * /register:
  *   post:
  *     summary: Crée un nouvel utilisateur dans la base de données
- *     parameters:
- *       - in: body
- *         name: body
- *         description: Informations de l'utilisateur à créer
- *         required: true
- *         schema:
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
  *             $ref: '#/definitions/User'
+ *
  *     responses:
  *       201:
  *         description: Utilisateur créé avec succès
+ *       409:
+ *        description: Nom d'utilisateur ou adresse email déjà utilisé
  *       500:
  *         description: Erreur interne du serveur
  * 
@@ -93,28 +104,6 @@ const { registerSchema, loginSchema } = require('../schemas/user.schema')
  *               type: array
  *               items:
  *                 $ref: '#/definitions/User'
- *
- * /user:
- *   post:
- *     summary: Crée un nouvel utilisateur
- *     security:
- *      - bearerAuth: []
- *     tags:
- *       - User
- *     parameters:
- *       - in: body
- *         name: body
- *         description: Informations de l'utilisateur à créer
- *         required: true
- *         schema:
- *           $ref: '#/definitions/User'
- *     responses:
- *       '200':
- *         description: Utilisateur créé avec succès
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/definitions/User'
  * 
  * /user/{id}:
  *   get:
