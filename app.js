@@ -4,7 +4,6 @@ const db = require('./models/index');
 const app = express()
 const port = process.env.PORT;
 const mongo_url = process.env.MONGO_URL;
-console.log(mongo_url);
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.urlencoded({ extended: false }));
