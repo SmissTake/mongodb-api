@@ -5,7 +5,7 @@ const placeCreateSchema = Joi.object({
     description: Joi.string().required(),
     history: Joi.string().required(),
     town: Joi.string().required(),
-    category: Joi.string(),
+    category: Joi.string().optional(),
     accessibility: Joi.string().valid('easy', 'medium', 'hard'),
     images: Joi.array().items(Joi.object({
         url: Joi.string().required()
@@ -13,15 +13,16 @@ const placeCreateSchema = Joi.object({
 });
 
 const placeUpdateSchema = Joi.object({
-    title: Joi.string(),
-    description: Joi.string(),
-    history: Joi.string(),
-    town: Joi.string(),
-    category: Joi.string(),
-    accessibility: Joi.string().valid('easy', 'medium', 'hard'),
+    title: Joi.string().optional(),
+    description: Joi.string().optional(),
+    history: Joi.string().optional(),
+    town: Joi.string().optional(),
+    category: Joi.string().optional(),
+    accessibility: Joi.string().valid('easy', 'medium', 'hard').optional(),
     images: Joi.array().items(Joi.object({
         url: Joi.string().required()
-    })),
+    })).optional(),
+    removeImages: Joi.array().items(Joi.string()).optional()
 });
 
 module.exports = {

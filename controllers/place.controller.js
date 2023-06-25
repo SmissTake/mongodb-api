@@ -83,6 +83,7 @@ exports.updatePlace = function (req, res) {
                         if (imageIndex !== -1) {
                             fs.unlink(place.images[imageIndex].url, err => {
                                 if (err) {
+                                    console.log("here3");
                                     console.error(err);
                                 }
                             });
@@ -93,17 +94,18 @@ exports.updatePlace = function (req, res) {
 
                 if (req.files && req.files.length > 0) {
                     updatedPlace.images = req.files.map(file => ({ url: file.path }));
-                    updatedPlace.save().then(data => {
-                        res.send(data);
-                    }).catch(err => {
-                        res.status(500).send({
-                            message: err.message || "Some error occurred while updating the Place."
-                        });
-                    });
-                } else {
-                    res.send(updatedPlace);
                 }
+
+                updatedPlace.save().then(data => {
+                    res.send(data);
+                }).catch(err => {
+                    console.log("here2");
+                    res.status(500).send({
+                        message: err.message || "Some error occurred while updating the Place."
+                    });
+                });
             }).catch(err => {
+                console.log("here1");
                 res.status(500).send({
                     message: err.message || "Some error occurred while updating the Place."
                 });
