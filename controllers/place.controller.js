@@ -52,20 +52,12 @@ exports.findPlace = function (req, res) {
 }
 
 exports.updatePlace = function (req, res) {
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.decode(token);
-    const userId = decodedToken.userId;
     const placeId = req.params.id;
 
     Place.findById(placeId).then(place => {
         if (!place) {
             return res.status(404).send({
                 message: "Place not found with id " + placeId
-            });
-        }
-        if (place.user.toString() !== userId) { // check if user ID matches
-            return res.status(403).send({
-                message: "You are not authorized to update this place"
             });
         }
 
@@ -120,32 +112,12 @@ exports.updatePlace = function (req, res) {
 
 exports.deletePlace = function (req, res) {
     const placeId = req.params.id;
-    const token = req.headers.authorization.split(' ')[1];
-    const decodedToken = jwt.decode(token);
-    const userId = decodedToken.userId;
-
-    Place.findById(placeId).then(place => {
-        if (!place) {
-            return res.status(404).send({
-                message: "Place not found with id " + placeId
-            });
-        }
-        if (place.user.toString() !== userId) {
-            return res.status(403).send({
-                message: "You are not authorized to delete this place"
-            });
-        }
-
-        Place.deleteOne({_id: placeId}).then(data => {
-            res.send(data);
-        }).catch(err => {
-            res.status(500).send({
-                message: err.message || "Some error occurred while deleting the Place."
-            });
-        });
+    
+    Place.deleteOne({_id: placeId}).then(data => {
+        res.send(data);
     }).catch(err => {
         res.status(500).send({
-            message: err.message || "Some error occurred while finding the Place."
+            message: err.message || "Some error occurred while deleting the Place."
         });
     });
 };

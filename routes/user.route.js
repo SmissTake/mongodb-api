@@ -4,6 +4,9 @@ const { login, register, findAllUsers , findUser, updateUser, deleteUser} = requ
 // Import the necessary middlewares
 const { schemaValidator } = require('../middlewares/validation.middleware');
 const { registerSchema, loginSchema } = require('../schemas/user.schema')
+const authenticateToken = require('../middlewares/authenticateToken');
+const authorizeUser = require('../middlewares/authorize.middleware');
+
 /**
  * @swagger
  * tags:
@@ -183,6 +186,6 @@ module.exports = (app) => {
 
     app.get('/users', findAllUsers);
     app.get('/user/:id', findUser);
-    app.patch('/user/:id', updateUser);
-    app.delete('/user/:id', deleteUser);
+    app.patch('/user/:id', authenticateToken, authorizeUser('User'), updateUser);
+    app.delete('/user/:id', authenticateToken, authorizeUser('User'), deleteUser);
 }
