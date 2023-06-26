@@ -18,8 +18,14 @@ function authorizeUser(entityName) {
         });
       }
 
+      // if entity is "user", check if the user is the same as the one in the token
+      if (entityName === 'User' && entity._id.toString() !== userId) {
+        return res.status(403).send({
+          message: "You are not authorized to modify this resource"
+        });
+      }
       // Check if the user is authorized to modify the resource
-      if (entity.user.toString() !== userId) {
+      else if (entity.user && entity.user.toString() !== userId) {
         return res.status(403).send({
           message: "You are not authorized to modify this resource"
         });
