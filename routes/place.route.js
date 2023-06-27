@@ -4,14 +4,10 @@ const {
   findPlace,
   updatePlace,
   deletePlace,
-  createComment,
-  updateComment,
-  deleteComment,
 } = require("../controllers/place.controller");
 const authenticateToken = require("../middlewares/authenticateToken");
 const { schemaValidator } = require('../middlewares/validation.middleware');
 const { placeCreateSchema, placeUpdateSchema } = require("../schemas/place.schema");
-const { commentCreateSchema, commentUpdateSchema } = require("../schemas/comment.schema");
 const upload = require('../middlewares/upload.middleware');
 const authorizeUser = require('../middlewares/authorize.middleware');
 
@@ -211,7 +207,4 @@ module.exports = (app) => {
   app.get("/place/:id", findPlace);
   app.patch("/place/:id", authenticateToken, authorizeUser('Place'), schemaValidator(placeUpdateSchema), updatePlace);
   app.delete("/place/:id", authenticateToken, authorizeUser('Place'), deletePlace);
-  app.post("/comment/:id", authenticateToken, upload, schemaValidator(commentCreateSchema), createComment);
-  app.patch("/comment/:id", authenticateToken, upload, schemaValidator(commentUpdateSchema), updateComment);
-  app.delete("/comment/:id", authenticateToken, deleteComment);
 };

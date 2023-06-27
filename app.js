@@ -47,6 +47,7 @@ db.mongoose.connect(mongo_url);
 
 require('./routes/place.route')(app);
 require('./routes/user.route')(app);
+require('./routes/comment.route')(app);
 
 app.listen(port, () => {
   console.log(`API listening on port ${port}`)
