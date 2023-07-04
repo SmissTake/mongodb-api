@@ -23,7 +23,7 @@ const options = {
     servers: [
       {
         url: 'http://localhost:3000',
-        description: 'Serveur de production'
+        description: 'Serveur de developpement'
       },
     ],
     components: {
