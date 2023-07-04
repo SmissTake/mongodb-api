@@ -27,6 +27,7 @@ exports.createPlace = function (req, res) {
 exports.findAllPlaces = function (req, res) {
     Place.find()
     .populate('user', 'username')
+    .populate('comments.user', 'username')
     .where({ is_active: true })
     .then(places => {
         res.send(places);
@@ -41,6 +42,7 @@ exports.findAllPlaces = function (req, res) {
 exports.findPlace = function (req, res) {
     Place.findById(req.params.id)
     .populate('user', 'username')
+    .populate('comments.user', 'username')
     .where({ is_active: true })
     .then(place => {
         res.send(place);
@@ -91,13 +93,11 @@ exports.updatePlace = function (req, res) {
                 updatedPlace.save().then(data => {
                     res.send(data);
                 }).catch(err => {
-                    console.log("here2");
                     res.status(500).send({
                         message: err.message || "Some error occurred while updating the Place."
                     });
                 });
             }).catch(err => {
-                console.log("here1");
                 res.status(500).send({
                     message: err.message || "Some error occurred while updating the Place."
                 });
