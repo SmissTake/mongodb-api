@@ -92,7 +92,7 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *         example: 1
  * /comment/{id}:
  *   post:
- *     summary: Create a new comment for a place
+ *     summary: Ajoute un commentaire à un lieu
  *     tags:
  *       - Comment
  *     security:
@@ -101,11 +101,11 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the place to add the comment to
+ *         description: ID du lieu
  *         schema:
  *           type: string
  *     requestBody:
- *       description: The comment to create
+ *       description: Le commentaire à créer
  *       required: true
  *       content:
  *         multipart/form-data:
@@ -113,22 +113,22 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *             $ref: '#/definitions/CommentCreate'
  *     responses:
  *       200:
- *         description: The created comment
+ *         description: Le commentaire créé
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/Comment'
  *       400:
- *         description: Invalid request body
+ *         description: Erreur de validation
  *       401:
- *         description: Unauthorized
+ *         description: Non autorisé
  *       404:
- *         description: Place not found
+ *         description: Lieu non trouvé
  *       500:
- *         description: Internal server error
+ *         description: Erreur serveur
  *
  *   patch:
- *     summary: Update a comment for a place
+ *     summary: Met à jour un commentaire
  *     tags:
  *       - Comment
  *     security:
@@ -137,11 +137,11 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the comment to update
+ *         description: ID du commentaire
  *         schema:
  *           type: string
  *     requestBody:
- *       description: The comment to create
+ *       description: Le commentaire à mettre à jour
  *       required: true
  *       content:
  *         multipart/form-data:
@@ -149,24 +149,24 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *             $ref: '#/definitions/CommentUpdate'
  *     responses:
  *       200:
- *         description: The updated comment
+ *         description: Le commentaire a été mis à jour
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/Comment'
  *       400:
- *         description: Invalid request body
+ *         description: Erreur de validation
  *       401:
- *         description: Unauthorized
+ *         description: Non autorisé
  *       403:
- *         description: Forbidden
+ *         description: Interdit
  *       404:
- *         description: Comment not found
+ *         description: Commentaire non trouvé
  *       500:
- *         description: Internal server error
+ *         description: Erreur serveur
  *
  *   delete:
- *     summary: Delete a comment for a place
+ *     summary: Supprime un commentaire
  *     tags:
  *       - Comment
  *     security:
@@ -175,24 +175,24 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *       - in: path
  *         name: id
  *         required: true
- *         description: ID of the comment to delete
+ *         description: ID du commentaire
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: The deleted comment
+ *         description: Le commentaire a été supprimé
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/CommentDelete'
  *       401:
- *         description: Unauthorized
+ *         description: Non autorisé
  *       403:
- *         description: Forbidden
+ *         description: Interdit
  *       404:
- *         description: Comment not found
+ *         description: Commentaire non trouvé
  *       500:
- *         description: Internal server error
+ *         description: Erreur serveur
  */
 
 module.exports = (app) => {

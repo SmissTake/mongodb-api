@@ -11,8 +11,7 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  * @swagger
  * tags:
  *   name: User
- *   description: API de gestion des utilisateurs
- *
+ *   description: gestion des utilisateurs
  * definitions:
  *   User:
  *     type: object

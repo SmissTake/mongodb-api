@@ -4,6 +4,8 @@ const {
   findPlace,
   updatePlace,
   deletePlace,
+  likePlace,
+  unlikePlace,
 } = require("../controllers/place.controller");
 const authenticateToken = require("../middlewares/authenticateToken");
 const { schemaValidator } = require('../middlewares/validation.middleware');
@@ -16,7 +18,7 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  * @swagger
  * tags:
  *   name: Place
- *   description: API de gestion des lieux d'urbex
+ *   description: gestion des lieux d'urbex
  *
  * definitions:
  *    Place:
@@ -144,39 +146,39 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *               $ref: '#/definitions/Place'
  * /place/{id}:
  *   get:
- *     summary: Get a place by ID
+ *     summary: Récupère un lieu d'urbex par ID
  *     tags: [Place]
  *     parameters:
  *       - name: id
  *         in: path
- *         description: ID of the place to retrieve
+ *         description: ID du lieu d'urbex à récupérer
  *         required: true
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Successfully retrieved a place
+ *         description: Lieu d'urbex récupéré avec succès
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/Place'
  *       404:
- *         description: Place not found
+ *         description: Lieu d'urbex non trouvé
  *
  *   patch:
- *     summary: Update a place by ID
+ *     summary: Met à jour un lieu d'urbex par ID
  *     security:
  *      - bearerAuth: []
  *     tags: [Place]
  *     parameters:
  *       - name: id
  *         in: path
- *         description: ID of the place to update
+ *         description: ID du lieu d'urbex à mettre à jour
  *         required: true
  *         schema:
  *           type: string
  *     requestBody:
- *       description: Fields to update in the place
+ *       description: Informations du lieu d'urbex à mettre à jour
  *       required: true
  *       content:
  *        multipart/form-data:
@@ -184,35 +186,81 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *           $ref: '#/definitions/PlaceUpdate'
  *     responses:
  *       200:
- *         description: Successfully updated the place
+ *         description: Lieu d'urbex mis à jour avec succès
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/Place'
  *       404:
- *         description: Place not found
+ *         description: Lieu d'urbex non trouvé
  *
  *   delete:
- *     summary: Delete a place by ID
+ *     summary: Supprime un lieu d'urbex par ID
  *     security:
  *      - bearerAuth: []
  *     tags: [Place]
  *     parameters:
  *       - name: id
  *         in: path
- *         description: ID of the place to delete
+ *         description: ID du lieu d'urbex à supprimer
  *         required: true
  *         schema:
  *           type: string
  *     responses:
  *       200:
- *         description: Successfully deleted the place
+ *         description: Lieu d'urbex supprimé avec succès
  *         content:
  *           application/json:
  *             schema:
  *               $ref: '#/definitions/PlaceDelete'
  *       404:
  *         description: Place not found
+ * 
+ * /place/{id}/like:
+ *   post:
+ *     summary: Ajoute un like à un lieu d'urbex
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Place]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID du lieu d'urbex à liker
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Like ajouté avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Place'
+ *       404:
+ *         description: Lieu d'urbex non trouvé
+ *
+ * /place/{id}/unlike:
+ *   post:
+ *     summary: Retire un like à un lieu d'urbex
+ *     security:
+ *       - bearerAuth: []
+ *     tags: [Place]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         description: ID du lieu d'urbex à unliker
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Like retiré avec succès
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/Place'
+ *       404:
+ *         description: Lieu d'urbex non trouvé
  */
 
 module.exports = (app) => {
@@ -221,4 +269,6 @@ module.exports = (app) => {
   app.get("/place/:id", findPlace);
   app.patch("/place/:id", authenticateToken, authorizeUser('Place'), schemaValidator(placeUpdateSchema), updatePlace);
   app.delete("/place/:id", authenticateToken, authorizeUser('Place'), deletePlace);
+  app.post("/place/:id/like", authenticateToken, likePlace);
+  app.post("/place/:id/unlike", authenticateToken, unlikePlace);
 };
