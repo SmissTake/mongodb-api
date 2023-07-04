@@ -30,7 +30,12 @@ exports.login = async (req, res) => {
     // Envoyer le token JWT au format Bearer
     res.status(200).json({ 
         token: token,
-        userId: user._id,
+        user: {
+            id: user._id,
+            username: user.username,
+            email: user.email,
+            bio: user.bio
+        }
     });
   };
   
