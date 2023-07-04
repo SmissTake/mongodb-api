@@ -27,6 +27,10 @@ const User = mongoose.model(
                 default: 'user'
             }
         ],
+        favoritePlaces: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Place'
+        }],
     })
 );
 

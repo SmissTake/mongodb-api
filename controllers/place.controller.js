@@ -2,6 +2,7 @@ const db = require('../models');
 const jwt = require('jsonwebtoken');
 
 const Place = db.place;
+const User = db.user;
 const uploadMiddleware = require('../middlewares/upload.middleware');
 
 exports.createPlace = function (req, res) {
@@ -119,5 +120,111 @@ exports.deletePlace = function (req, res) {
         res.status(500).send({
             message: err.message || "Some error occurred while deleting the Place."
         });
+    });
+};
+
+exports.likePlace = function (req, res) {
+  const placeId = req.params.id;
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.decode(token);
+  const userId = decodedToken.userId;
+
+  // Find the place document by id and increment the like count
+  Place.findByIdAndUpdate(placeId, { $inc: { likes: 1 } }, { new: true })
+    .then(place => {
+      if (!place) {
+        return res.status(404).send({
+          message: "Place not found with id " + placeId
+        });
+      }
+
+      // Find the user document by id and add the place id to the favoritePlaces array
+      User.findById(userId)
+        .then(user => {
+          if (!user) {
+            return res.status(404).send({
+              message: "User not found with id " + userId
+            });
+          }
+
+          // Check if the placeId already exists in the favoritePlaces array
+          if (user.favoritePlaces.includes(placeId)) {
+            return res.status(400).send({
+              message: "Place already liked by user"
+            });
+          }
+
+          // Add the placeId to the favoritePlaces array
+          user.favoritePlaces.push(placeId);
+          user.save()
+            .then(() => {
+              res.send({ place, user });
+            }).catch(err => {
+              res.status(500).send({
+                message: err.message || "Some error occurred while liking the Place."
+              });
+            });
+        }).catch(err => {
+          res.status(500).send({
+            message: err.message || "Some error occurred while liking the Place."
+          });
+        });
+    }).catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while liking the Place."
+      });
+    });
+};
+
+exports.unlikePlace = function (req, res) {
+  const placeId = req.params.id;
+  const token = req.headers.authorization.split(' ')[1];
+  const decodedToken = jwt.decode(token);
+  const userId = decodedToken.userId;
+
+  // Find the place document by id and decrement the like count
+  Place.findByIdAndUpdate(placeId, { $inc: { likes: -1 } }, { new: true })
+    .then(place => {
+      if (!place) {
+        return res.status(404).send({
+          message: "Place not found with id " + placeId
+        });
+      }
+
+      // Find the user document by id and remove the place id from the favoritePlaces array
+      User.findById(userId)
+        .then(user => {
+          if (!user) {
+            return res.status(404).send({
+              message: "User not found with id " + userId
+            });
+          }
+
+          // Check if the placeId exists in the favoritePlaces array
+          if (!user.favoritePlaces.includes(placeId)) {
+            return res.status(400).send({
+              message: "Place not liked by user"
+            });
+          }
+
+          // Remove the placeId from the favoritePlaces array
+          user.favoritePlaces.pull(placeId);
+          user.save()
+            .then(() => {
+              res.send({ place, user });
+            }).catch(err => {
+              res.status(500).send({
+                message: err.message || "Some error occurred while unliking the Place."
+              });
+            });
+        }).catch(err => {
+          res.status(500).send({
+            message: err.message || "Some error occurred while unliking the Place."
+          });
+        });
+    }).catch(err => {
+      res.status(500).send({
+        message: err.message || "Some error occurred while unliking the Place."
+      });
     });
 };

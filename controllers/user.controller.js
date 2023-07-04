@@ -79,6 +79,7 @@ exports.findAllUsers = function (req, res) {
 exports.findUser = function (req, res) {
     User.findById(req.params.id)
     .select("-password -role")
+    .populate("favoritePlaces", "_id title town images likes")
     .then(data => {
         res.send(data);
     }).catch(err => {
