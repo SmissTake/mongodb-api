@@ -16,6 +16,35 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *   description: gestion des commentaires
  * 
  * definitions:
+ *   Comment:
+ *     type: object
+ *     properties:
+ *       _id:
+ *         type: string
+ *         description: ID du commentaire
+ *         example: 5f9d7a3b9d9b1f2b1c9d1b1a
+ *       comment:
+ *         type: string
+ *         description: Le contenu du commentaire
+ *         example: Super endroit !
+ *       images:
+ *         type: array
+ *         items:
+ *           type: string
+ *           format: binary
+ *         description: Les images du commentaire
+ *         example: ["5f9d7a3b9d9b1f2b1c9d1b1a.jpg"]
+ *       user:
+ *         type: object
+ *         properties:
+ *           _id:
+ *             type: string
+ *             description: ID de l'utilisateur
+ *             example: 5f9d7a3b9d9b1f2b1c9d1b1a
+ *           username:
+ *             type: string
+ *             description: Le nom d'utilisateur
+ *             example: JohnDoe
  *   CommentCreate:
  *     type: object
  *     properties:
@@ -50,7 +79,17 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *     required:
  *       - placeId
  *       - comment
- * 
+ *   CommentDelete:
+ *     type: object
+ *     properties:
+ *       acknowledged:
+ *         type: boolean
+ *         description: Indique si la suppression a été effectuée
+ *         example: true
+ *       deletedCount:
+ *         type: number
+ *         description: Nombre de documents supprimés
+ *         example: 1
  * /comment/{id}:
  *   post:
  *     summary: Create a new comment for a place
@@ -145,7 +184,7 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *         content:
  *           application/json:
  *             schema:
- *               $ref: '#/definitions/Comment'
+ *               $ref: '#/definitions/CommentDelete'
  *       401:
  *         description: Unauthorized
  *       403:

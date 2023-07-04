@@ -28,7 +28,7 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *       password:
  *         type: string
  *         description: Mot de passe de l'utilisateur
- *         example: Password123
+ *         example: Password1
  *       bio:
  *         type: string
  *         description: Biographie de l'utilisateur
@@ -37,7 +37,59 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *       - username
  *       - email
  *       - password
- *
+ *   UserReturnLogin:
+ *     type: object
+ *     properties:
+ *       id:
+ *         type: string
+ *         description: ID de l'utilisateur
+ *         example: 5f9d7a3b9d9b1f2b1c9d1b1a
+ *       username:
+ *         type: string
+ *         description: Nom d'utilisateur de l'utilisateur
+ *         example: JohnDoe
+ *       email:
+ *         type: string
+ *         description: Adresse email de l'utilisateur
+ *         example: john.doe@example.com
+ *       bio:
+ *         type: string
+ *         description: Biographie de l'utilisateur
+ *         example: I'm a software developer
+ *   UserReturn:
+ *     type: object
+ *     properties:
+ *       _id:
+ *         type: string
+ *         description: ID de l'utilisateur
+ *         example: 5f9d7a3b9d9b1f2b1c9d1b1a
+ *       username:
+ *         type: string
+ *         description: Nom d'utilisateur de l'utilisateur
+ *         example: JohnDoe
+ *       email:
+ *         type: string
+ *         description: Adresse email de l'utilisateur
+ *         example: john.doe@example.com
+ *       __v:
+ *         type: number
+ *         description: Version du document
+ *         example: 0
+ *       bio:
+ *         type: string
+ *         description: Biographie de l'utilisateur
+ *         example: I'm a software developer
+ *   UserDelete:
+ *     type: object
+ *     properties:
+ *       acknowledged:
+ *         type: boolean
+ *         description: Indique si la suppression a été effectuée
+ *         example: true
+ *       deletedCount:
+ *         type: number
+ *         description: Nombre de documents supprimés
+ *         example: 1
  * /login:
  *   post:
  *     summary: Connecte un utilisateur existant et renvoie un token JWT
@@ -56,7 +108,7 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *               password:
  *                 type: string
  *                 description: Mot de passe de l'utilisateur
- *                 example: Password123
+ *                 example: Password1
  *     responses:
  *       200:
  *         description: Succès - renvoie un token JWT au format Bearer
@@ -68,6 +120,9 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *                 token:
  *                   type: string
  *                   description: Token JWT au format Bearer
+ *                   example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+ *                 user:
+ *                   $ref: '#/definitions/UserReturnLogin'   
  *       401:
  *         description: Nom d'utilisateur ou mot de passe incorrect
  *       422:
@@ -106,7 +161,7 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *             schema:
  *               type: array
  *               items:
- *                 $ref: '#/definitions/User'
+ *                 $ref: '#/definitions/UserReturn'
  * 
  * /user/{id}:
  *   get:
@@ -122,8 +177,10 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *     responses:
  *       200:
  *         description: Utilisateur récupéré avec succès.
- *         schema:
- *           $ref: "#/definitions/User"
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/definitions/UserReturn"
  *       404:
  *         description: Utilisateur non trouvé - L'identifiant fourni ne correspond à aucun utilisateur existant.
  *       500:
@@ -151,8 +208,10 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *     responses:
  *       200:
  *         description: Utilisateur mis à jour avec succès.
- *         schema:
- *           $ref: '#/definitions/User'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/UserReturn'
  *       404:
  *         description: Utilisateur non trouvé - L'identifiant fourni ne correspond à aucun utilisateur existant.
  *       500:
@@ -172,8 +231,10 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *     responses:
  *       200:
  *         description: Utilisateur supprimé avec succès.
- *         schema:
- *           $ref: '#/definitions/User'
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/UserDelete'
  *       404:
  *         description: Utilisateur non trouvé
  *

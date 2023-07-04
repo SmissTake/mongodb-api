@@ -96,7 +96,17 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *          type: string
  *          description: Accessibilité du lieu d'urbex
  *          enum: [easy, medium, hard]
- * 
+ *    PlaceDelete:
+ *      type: object
+ *      properties:
+ *        acknowledged:
+ *          type: boolean
+ *          description: Indique si la suppression a été effectuée
+ *          example: true
+ *        deletedCount:
+ *          type: number
+ *          description: Nombre de documents supprimés
+ *          example: 1
  * /:
  *   get:
  *     summary: Récupère la liste des lieux d'urbexs
@@ -195,8 +205,12 @@ const authorizeUser = require('../middlewares/authorize.middleware');
  *         schema:
  *           type: string
  *     responses:
- *       204:
+ *       200:
  *         description: Successfully deleted the place
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/definitions/PlaceDelete'
  *       404:
  *         description: Place not found
  */
