@@ -89,7 +89,10 @@ exports.findUser = function (req, res) {
     })
 }
 
-exports.updateUser = function (req, res) {
+exports.updateUser = async function (req, res) {
+    const { username, email, password, bio } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    req.body.password = hashedPassword;
     User.updateOne({_id: req.params.id}, {...req.body}).then(data => {
         res.send(data);
     }).catch(err => {
